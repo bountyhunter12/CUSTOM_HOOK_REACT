@@ -1,70 +1,180 @@
-# Getting Started with Create React App
+# ⚛️ Custom React Counter App – Advanced Testing Showcase
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A simple React Counter application built using a **custom hook**, fully tested with **React Testing Library**, `userEvent`, Jest, edge case validation, and mocking.
 
-## Available Scripts
+This project demonstrates professional frontend testing practices used in real-world production applications.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 🚀 Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Custom React Hook (`useCounter`)
+- Increment / Decrement
+- Restart to initial value
+- Switch sign (+ ↔ -)
+- Edge case handling
+- Full test coverage
+- Console log mocking
+- Realistic user interaction testing (`userEvent`)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## 🧠 Tech Stack
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| Tool | Purpose |
+|------|---------|
+| React | UI Framework |
+| Jest | Test Runner |
+| React Testing Library | Component Testing |
+| @testing-library/user-event | Realistic User Interactions |
+| JavaScript (ES6+) | Language |
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 📂 Project Structure
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+src/
+│
+├── App.js
+├── Counter.js
+├── useCounter.js
+│
+├── Count.test.js
+└── App.test.js
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## 🧪 Testing Strategy
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+This project demonstrates a comprehensive testing approach across multiple dimensions:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### ✅ 1. Component Testing
+- Verifies rendering behavior
+- Ensures UI updates correctly after interactions
+- Confirms button interactions produce expected results
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### ✅ 2. Realistic User Interaction
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Uses [`@testing-library/user-event`](https://testing-library.com/docs/user-event/intro/) instead of `fireEvent` to simulate actual user behavior:
 
-## Learn More
+```js
+import userEvent from '@testing-library/user-event';
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+await userEvent.click(screen.getByText('Increment'));
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### ✅ 3. Edge Case Testing
 
-### Code Splitting
+Covered scenarios:
+- Switching sign of `0`
+- Large number increments (100 clicks)
+- Rapid clicking sequences
+- Multiple sequential operations
+- Restart after state mutation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### ✅ 4. Mocking & Spying
 
-### Analyzing the Bundle Size
+```js
+jest.spyOn(console, "log").mockImplementation(() => {});
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Ensures side effects are tested without polluting test output.
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## 📊 Test Coverage
 
-### Advanced Configuration
+To generate a full coverage report:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```bash
+npm test -- --coverage
+```
 
-### Deployment
+Coverage includes:
+- ✔ Statements
+- ✔ Branches
+- ✔ Functions
+- ✔ Lines
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
+## 🏗 Custom Hook Implementation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+`useCounter.js` encapsulates all state logic, following the **separation of concerns** principle:
+
+```js
+const increment = () => setCount(prev => prev + 1);
+const decrement = () => setCount(prev => prev - 1);
+const restart   = () => setCount(initialValue);
+const switchSign = () => setCount(prev => prev * -1);
+```
+
+| Layer | File | Responsibility |
+|-------|------|---------------|
+| State Logic | `useCounter.js` | All counter state and operations |
+| UI Logic | `Counter.js` | Rendering and user interaction |
+| Entry Point | `App.js` | App composition |
+
+This separation improves **testability**, **reusability**, and **maintainability**.
+
+---
+
+## ▶️ Run Locally
+
+**Install dependencies:**
+
+```bash
+npm install
+```
+
+**Start development server:**
+
+```bash
+npm start
+```
+
+**Run tests:**
+
+```bash
+npm test
+```
+
+**Run tests with coverage:**
+
+```bash
+npm test -- --coverage
+```
+
+---
+
+## 💡 What This Project Demonstrates
+
+| Concept | Description |
+|--------|-------------|
+| Deterministic Tests | Predictable, repeatable test outcomes |
+| User-perspective Testing | Testing UI the way real users interact |
+| Avoid Implementation Details | Tests focus on behavior, not internals |
+| Proper Mocking Strategy | Clean mocking without side effects |
+| Edge Case Validation | Handles boundary and unexpected inputs |
+| Clean Test Structure | Organized using `describe` blocks |
+
+---
+
+## 📌 Why This Project Matters
+
+> This repository is **not** about building a counter.
+
+It demonstrates:
+
+-  Professional frontend testing patterns
+-  Clean architecture with custom hooks
+-  Industry-recommended testing tools
+-  Production-level test coverage mindset
+
+---
+
+## 📄 License
+
+MIT © 2024
